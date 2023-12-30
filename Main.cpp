@@ -3,8 +3,8 @@
 
 int main(int argc, char** argv)
 {
-	std::cout << "Hello!" << std::endl;
-  sf::RenderWindow window(sf::VideoMode(1280, 720), "SNEAKY JOE");
+	std::cout << "Hello! WORLD" << std::endl;
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "SNEAKY JOE");
 	return 0;
 
 }
