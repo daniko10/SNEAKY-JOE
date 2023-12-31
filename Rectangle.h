@@ -10,12 +10,13 @@ public:
 	void draw(sf::RenderWindow&);
 	void moveA();
 	void moveD();
-	void jump();
+	void jump(sf::RenderWindow&);
 	void gravity(Rectangle*, int);
 	void check_collision(Rectangle*, int);
 
 	bool jumped = false;
 	friend void print_rect(sf::RenderWindow&, Rectangle*, int);
+	friend void controlling(sf::RenderWindow&, Rectangle*, int, Rectangle*, int, Rectangle*, int);
 private:
 	sf::RectangleShape _rect;
 	bool max_width_left = false;

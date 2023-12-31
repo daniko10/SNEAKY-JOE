@@ -24,32 +24,24 @@ int main()
 					window.close();
 				} break;
 			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-				player->moveA();
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-				player->moveD();
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-				player->jumped = true;
-			}
+			while (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+					player->moveD();
+				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+					player->moveA();
+				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+					player->jumped = true;
+				}
+
+				controlling(window, player, 1, floor, 1, levels, 5);
+
+			}		
 		}
 
-		player->check_collision(levels, 5);
-		if (player->jumped == false)
-			player->gravity(levels, 5);
-		else
-			player->jump();
+		controlling(window, player, 1, floor, 1, levels, 5);
 
-		/////////////////// PRINTING ZONE
-		window.clear();
-
-		print_rect(window, floor, 1);
-		print_rect(window, levels, 5);
-		print_rect(window, player, 1);
-
-		window.display();
-		/////////////////// END OF ZONE
 	}
 
 }
