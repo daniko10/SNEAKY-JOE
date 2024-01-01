@@ -59,7 +59,6 @@ void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, R
 	for (int i = 0; i < size_levels; i++) {
 		if ((player->_height - levels[i]._height < 50 && player->_height > levels[i]._height) && (player->_width > levels[i]._width - 50 && player->_width < levels[i]._width + 200)) {
 			level_above = true;
-			player->_rect.setPosition(player->_width, levels[i]._height + 50);
 			break;
 		}
 	}
@@ -134,7 +133,7 @@ void Rectangle::gravity(Rectangle* levels, int size) {
 	bool standing = false;
 	
 	for (int i = 0; i < size;i++) {
-		if (( _height <= levels[i]._height && _height >= levels[i]._height - 100) && ((_width - levels[i]._width >= 0 && _width <= levels[i]._width + 200) || (_width - levels[i]._width <0 && _width > levels[i]._width - 50)))
+		if (( _height <= levels[i]._height && _height >= levels[i]._height - 100) && ((_width - levels[i]._width > -50 && _width < levels[i]._width + 200) || (_width - levels[i]._width < 0 && _width > levels[i]._width - 50)))
 	 	{
 			_height = levels[i]._height - 100;
 			_rect.setPosition(_width, _height);
