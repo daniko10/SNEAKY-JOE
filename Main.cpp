@@ -6,7 +6,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "SNEAKY JOE");
 	window.setFramerateLimit(60);
 
-	Rectangle* player = new Rectangle({ 50, 100 }, { 625, 310 }, sf::Color::Blue);
+	Rectangle* player = new Rectangle({ 50, 100 }, { 625, 0 }, sf::Color::Blue);
 	Rectangle* levels = new Rectangle[7]{
 		Rectangle({200, 50},{350, 350},sf::Color::White),
 		Rectangle({200, 50},{100, 510},sf::Color::White),
