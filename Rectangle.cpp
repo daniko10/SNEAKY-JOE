@@ -57,7 +57,7 @@ void Rectangle::jump() {
 void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, Rectangle* floor, int size_floor, Rectangle* levels, int size_levels) {
 	
 	for (int i = 0; i < size_levels; i++) {
-		if ((player->_height - levels[i]._height < 50 && player->_height > levels[i]._height) && (player->_width > levels[i]._width - 50 && player->_width < levels[i]._width + 200)) {
+		if (((player->_height - levels[i]._height < 50 && player->_height > levels[i]._height) && (player->_width > levels[i]._width - 50 && player->_width < levels[i]._width + 200)) || player->_height <= 0) {
 			level_above = true;
 			break;
 		}

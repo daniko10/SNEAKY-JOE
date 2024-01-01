@@ -6,13 +6,15 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "SNEAKY JOE");
 	window.setFramerateLimit(60);
 
-	Rectangle* player = new Rectangle({ 50, 100 }, { 615, 310 }, sf::Color::Blue);
-	Rectangle* levels = new Rectangle[5]{
-		Rectangle({200, 50},{100, 200},sf::Color::White),
-		Rectangle({200, 50},{100, 310},sf::Color::White),
-		Rectangle({200, 50},{550, 410},sf::Color::White),
-		Rectangle({200, 50},{1000, 300},sf::Color::White),
-		Rectangle({200, 50},{900, 550},sf::Color::White)
+	Rectangle* player = new Rectangle({ 50, 100 }, { 625, 310 }, sf::Color::Blue);
+	Rectangle* levels = new Rectangle[7]{
+		Rectangle({200, 50},{350, 350},sf::Color::White),
+		Rectangle({200, 50},{100, 510},sf::Color::White),
+		Rectangle({200, 50},{100, 190},sf::Color::White),
+		Rectangle({200, 50},{550, 510},sf::Color::White),
+		Rectangle({200, 50},{750, 350},sf::Color::White),
+		Rectangle({200, 50},{1000, 510},sf::Color::White),
+		Rectangle({200, 50},{1000, 190},sf::Color::White)
 	};
 	Rectangle* floor = new Rectangle({ 1280, 50 }, { 0,670 }, sf::Color::Cyan);
 
@@ -35,12 +37,12 @@ int main()
 					player->jumped = true;
 				}
 
-				controlling(window, player, 1, floor, 1, levels, 5);
+				controlling(window, player, 1, floor, 1, levels, 7);
 
 			}		
 		}
 
-		controlling(window, player, 1, floor, 1, levels, 5);
+		controlling(window, player, 1, floor, 1, levels, 7);
 
 	}
 
