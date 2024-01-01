@@ -10,7 +10,7 @@ public:
 	void draw(sf::RenderWindow&);
 	void moveA();
 	void moveD();
-	void jump(sf::RenderWindow&);
+	void jump();
 	void gravity(Rectangle*, int);
 	void check_collision(Rectangle*, int);
 
