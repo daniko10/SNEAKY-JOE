@@ -26,26 +26,25 @@ int main()
 				window.close();
 			} break;
 			}
-			while (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-					player->moveD();
-				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-					player->moveA();
-				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-					player->jumped = true;
-				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-					player->setSize(50, 50);
-				}
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-					player->setSize(50, 100);
-				}
-
+			while (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::S) ) {
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+						player->moveD();
+					}
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+						player->moveA();
+					}
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+						player->jumped = true;
+					}
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+						player->setSize(50, 50);
+					}
+					else  {
+					player->setSize(50, 100);	
+					}
 				controlling(window, player, 1, floor, 1, levels, 7);
-
 			}
+			player->setSize(50, 100);
 		}
 
 		controlling(window, player, 1, floor, 1, levels, 7);
