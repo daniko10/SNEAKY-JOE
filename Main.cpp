@@ -22,11 +22,11 @@ int main()
 		sf::Event event;
 		while (window.pollEvent(event)) {
 			switch (event.type) {
-				case sf::Event::Closed: {
-					window.close();
-				} break;
+			case sf::Event::Closed: {
+				window.close();
+			} break;
 			}
-			while (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+			while (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 					player->moveD();
 				}
@@ -36,10 +36,16 @@ int main()
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 					player->jumped = true;
 				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+					player->setSize(50, 50);
+				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+					player->setSize(50, 100);
+				}
 
 				controlling(window, player, 1, floor, 1, levels, 7);
 
-			}		
+			}
 		}
 
 		controlling(window, player, 1, floor, 1, levels, 7);

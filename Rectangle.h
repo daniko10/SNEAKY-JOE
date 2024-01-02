@@ -13,6 +13,7 @@ public:
 	void jump();
 	void gravity(Rectangle*, int);
 	void check_collision(Rectangle*, int);
+	void setSize(int, int);
 
 	bool jumped = false;
 	friend void print_rect(sf::RenderWindow&, Rectangle*, int);
@@ -23,9 +24,11 @@ private:
 	bool max_width_right = false;
 	bool max_height = false;
 	bool can_jump = false;
+	bool hide = false;
 	int _width;
 	int _height;
 	int _position_jump = 310;
+	int _size_y;
 };
 
 #endif
