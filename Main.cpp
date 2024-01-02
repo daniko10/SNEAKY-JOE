@@ -51,4 +51,8 @@ int main()
 
 	}
 
+	clear_memory_single_obj(player);
+	clear_memory_single_obj(floor);
+	clear_memory_nonsingle_obj(levels);
+
 }
