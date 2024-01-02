@@ -194,3 +194,11 @@ void print_rect(sf::RenderWindow& window, Rectangle* ptr, int size) {
 	for (int i = 0; i < size;i++)
 		ptr[i].draw(window);
 }
+
+void clear_memory_single_obj(Rectangle* ptr) {
+	delete ptr;
+}
+
+void clear_memory_nonsingle_obj(Rectangle* ptr) {
+	delete[] ptr;
+}
