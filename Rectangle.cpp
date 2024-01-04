@@ -1,5 +1,6 @@
 #include "MyLibrary.h"
 #include "Rectangle.h"
+#include "Menu.h"
 
 static float gravity_down = 0.0;
 bool level_above = false;
@@ -60,23 +61,27 @@ void Rectangle::jump() {
 
 }
 
-void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, Rectangle* floor, int size_floor, Rectangle* levels, int size_levels) {
-
-	for (int i = 0; i < size_levels; i++) {
-		if (((player->_height - levels[i]._height < 50 && player->_height > levels[i]._height) && (player->_width > levels[i]._width - 50 && player->_width < levels[i]._width + 200)) || player->_height <= 0) {
-			level_above = true;
-			break;
-		}
-	}
-
-	player->check_collision(levels, size_levels);
-	if (player->jumped == false || player->can_jump == false || level_above)
-		player->gravity(levels, size_levels);
-	else
-		player->jump();
-
+void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, Rectangle* floor, int size_floor, Rectangle* levels, int size_levels, int* boolean, Menu* tab_menu) {
 	window.clear();
 
+	if (*boolean == 0) {
+		menu(window, boolean, tab_menu);
+		
+	}
+	else {
+		for (int i = 0; i < size_levels; i++) {
+			if (((player->_height - levels[i]._height < 50 && player->_height > levels[i]._height) && (player->_width > levels[i]._width - 50 && player->_width < levels[i]._width + 200)) || player->_height <= 0) {
+				level_above = true;
+				break;
+			}
+		}
+
+		player->check_collision(levels, size_levels);
+		if (player->jumped == false || player->can_jump == false || level_above)
+			player->gravity(levels, size_levels, *boolean);
+		else
+			player->jump();
+	}
 	print_rect(window, floor, size_floor);
 	print_rect(window, levels, size_levels);
 	print_rect(window, player, size_player);
@@ -135,7 +140,9 @@ void Rectangle::check_collision(Rectangle* levels, int size) {
 	_rect.setPosition(_width, _height);
 }
 
-void Rectangle::gravity(Rectangle* levels, int size) {
+void Rectangle::gravity(Rectangle* levels, int size, int boolean) {
+	if (boolean == 0)
+		return;
 	bool standing = false;
 
 	for (int i = 0; i < size;i++) {
