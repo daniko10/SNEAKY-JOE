@@ -7,8 +7,10 @@
 class Rectangle {
 public:
 	Rectangle() = default;
-	Rectangle(sf::Vector2f, sf::Vector2f, sf::Color);
+	Rectangle(sf::Vector2f, sf::Vector2f, sf::Color, sf::Texture*);
+	Rectangle(sf::Vector2f, sf::Vector2f, sf::Color, sf::Texture*, bool);
 	void draw(sf::RenderWindow&);
+	void move_rocket(Rectangle*, int);
 	void moveA();
 	void moveD();
 	void jump();
@@ -19,7 +21,8 @@ public:
 
 	bool jumped = false;
 	friend void print_rect(sf::RenderWindow&, Rectangle*, int);
-	friend void controlling(sf::RenderWindow&, Rectangle*, int, Rectangle*, int, Rectangle*, int, int*, Menu*, Rectangle*);
+	friend void control_rocket(Rectangle*, int);
+	friend void controlling(sf::RenderWindow&, Rectangle*, int, Rectangle*, int, Rectangle*, int, int*, Menu*, Rectangle*, Rectangle*, int*, Rectangle*, int);
 	friend void clear_memory_single_obj(Rectangle*);
 	friend void clear_memory_nonsingle_obj(Rectangle*);
 private:
@@ -29,10 +32,12 @@ private:
 	bool max_height = false;
 	bool can_jump = false;
 	bool hide = false;
+	bool rocket_to_right = false;
 	int _width;
 	int _height;
 	int _position_jump = 310;
 	int _size_y;
+	int _size_x;
 };
 
 #endif

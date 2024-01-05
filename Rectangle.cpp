@@ -2,25 +2,60 @@
 #include "Rectangle.h"
 #include "Menu.h"
 
-static float gravity_down = 0.0;
+float gravity_down_jump = 0.0;
+float gravity_down = 0.0;
 bool level_above = false;
 bool first_touch = false;
 
 ///////////////////////////////////////////// METHODS
 
-Rectangle::Rectangle(sf::Vector2f size, sf::Vector2f position, sf::Color color) {
+Rectangle::Rectangle(sf::Vector2f size, sf::Vector2f position, sf::Color color, sf::Texture* texture) {
 	_rect.setPosition(position);
 	_rect.setSize(size);
 	if(color != sf::Color::Blue)
 		_rect.setFillColor(color);
+	_rect.setTexture(texture);
 
 	_width = position.x;
 	_height = position.y;
 	_size_y = size.y;
+	_size_x = size.x;
+}
+
+Rectangle::Rectangle(sf::Vector2f size, sf::Vector2f position, sf::Color color, sf::Texture* texture, bool s) {
+	_rect.setPosition(position);
+	_rect.setSize(size);
+	if (color != sf::Color::Blue)
+		_rect.setFillColor(color);
+	_rect.setTexture(texture);
+
+	_width = position.x;
+	_height = position.y;
+	_size_y = size.y;
+	_size_x = size.x;
+	rocket_to_right = s;
 }
 
 void Rectangle::draw(sf::RenderWindow& window) {
 	window.draw(_rect);
+}
+
+void Rectangle::move_rocket(Rectangle* rockets, int size) {
+	if (rocket_to_right && _width >= 1280) {
+		_width = -100;
+		control_rocket(rockets, size);
+	}
+	else if(rocket_to_right && _width < 1280)
+		_width += 8;
+
+	if (!rocket_to_right && _width <= -100) {
+		_width = 1280;
+		control_rocket(rockets, size);
+	}
+	else if(!rocket_to_right && _width > -100)
+		_width -= 8;
+
+	_rect.setPosition(_width, _height);
 }
 
 void Rectangle::moveA() {
@@ -51,7 +86,8 @@ void Rectangle::jump() {
 		return;
 	}
 
-	_height = can_jump == true ? _height > _position_jump - 200 ? _height -= 5 : _height : _height;
+	_height = can_jump == true ? _height > _position_jump - 200 ? _height - 10 + gravity_down_jump : _height : _height;
+	gravity_down_jump = can_jump == true ? gravity_down_jump += 0.2 : 0;
 
 	if (_height <= _position_jump - 200) {
 		jumped = false;
@@ -62,9 +98,14 @@ void Rectangle::jump() {
 
 }
 
-void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, Rectangle* floor, int size_floor, Rectangle* levels, int size_levels, int* boolean, Menu* tab_menu, Rectangle* background) {
+void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, Rectangle* floor, int size_floor, Rectangle* levels, int size_levels, int* boolean, Menu* tab_menu, Rectangle* background, Rectangle* hearts, int* size_heart, Rectangle* rockets, int size_rockets) {
 	window.clear();
 	print_rect(window, background, 1);
+
+	if (*size_heart == 0) {
+		*boolean = 2;
+		return;
+	}
 
 	if (*boolean == 0) {
 		menu(window, boolean, tab_menu);
@@ -81,13 +122,21 @@ void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, R
 		player->check_collision(levels, size_levels);
 		if (player->jumped == false || player->can_jump == false || level_above)
 			player->gravity(levels, size_levels, *boolean);
-		else
+		else {
 			player->jump();
+		}
 	}
-	
+
+	print_rect(window, hearts, *size_heart);
 	print_rect(window, floor, size_floor);
 	print_rect(window, levels, size_levels);
 	print_rect(window, player, size_player);
+
+	if (*boolean != 0) {
+		print_rect(window, rockets, size_rockets);
+		for (int i = 0; i < size_rockets; i++)
+			rockets[i].move_rocket(rockets, size_rockets);
+	}
 
 	window.display();
 
@@ -96,23 +145,23 @@ void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, R
 
 void Rectangle::check_collision(Rectangle* levels, int size) {
 	for (int i = 0; i < size; i++) {
-		if ((_width > levels[i]._width - 47 && _width < levels[i]._width + 197) && (_height >= levels[i]._height - _size_y && _height <= levels[i]._height + 50))
+		if ((_width > levels[i]._width - _size_x + 3 && _width < levels[i]._width + levels[i]._size_x - 3) && (_height >= levels[i]._height - _size_y && _height <= levels[i]._height + levels[i]._size_y))
 			return;
 		if (levels[i]._width > _width) {
 			if (levels[i]._height < _height) {
-				if ((_height - levels[i]._height < 50) && (levels[i]._width - _width < 50))
+				if ((_height - levels[i]._height < levels[i]._size_y) && (levels[i]._width - _width < _size_x))
 				{
 					max_width_right = true;
-					_width = levels[i]._width - 50;
+					_width = levels[i]._width - _size_x;
 				}
 				else
 					max_width_right = false;
 			}
 			else {
-				if ((levels[i]._height - _height < _size_y) && (levels[i]._width - _width < 50))
+				if ((levels[i]._height - _height < _size_y) && (levels[i]._width - _width < _size_x))
 				{
 					max_width_right = true;
-					_width = levels[i]._width - 50;
+					_width = levels[i]._width - _size_x;
 				}
 				else
 					max_width_right = false;
@@ -120,19 +169,19 @@ void Rectangle::check_collision(Rectangle* levels, int size) {
 		}
 		else if (levels[i]._width < _width) {
 			if (levels[i]._height < _height) {
-				if ((levels[i]._height - _height > -50) && (levels[i]._width - _width > -200))
+				if ((levels[i]._height - _height > -levels[i]._size_y) && (levels[i]._width - _width > -levels[i]._size_x))
 				{
 					max_width_left = true;
-					_width = levels[i]._width + 200;
+					_width = levels[i]._width + levels[i]._size_x;
 				}
 				else
 					max_width_left = false;
 			}
 			else {
-				if ((levels[i]._height - _height < _size_y) && (levels[i]._width - _width > -200))
+				if ((levels[i]._height - _height < _size_y) && (levels[i]._width - _width > -levels[i]._size_x))
 				{
 					max_width_left = true;
-					_width = levels[i]._width + 200;
+					_width = levels[i]._width + levels[i]._size_x;
 				}
 				else
 					max_width_left = false;
@@ -172,13 +221,14 @@ void Rectangle::gravity(Rectangle* levels, int size, int boolean) {
 		first_touch = true;
 		can_jump = true;
 		gravity_down = 0;
+		gravity_down_jump = 0;
 		return;
 	}
 
 	can_jump = false;
 	jumped = false;
 	if (_size_y == 100)
-		_height = _height < 570 ? _height += 3 + gravity_down : _height = 570;
+		_height = _height < 570 ? _height += 5 + gravity_down : _height = 570;
 	else if (_size_y == 50)
 		_height = _height < 620 ? _height += 3 + gravity_down : _height = 620;
 	_rect.setPosition(_width, _height);
@@ -203,6 +253,17 @@ void Rectangle::setTexture(sf::Texture* texture) {
 }
 
 ///////////////////////////////////////////// METHODS
+
+void control_rocket(Rectangle* rockets, int size) {
+	int first = rand() % 360;
+	rockets[0]._height = first;
+	first = rand() % 360;
+	rockets[size / 2]._height = first;
+	for (int i = 1; i < size / 2; i++)
+		rockets[i]._height = rockets[i - 1]._height + 50 + rand() % 300;
+	for (int i = size / 2 + 1; i < size;i++)
+		rockets[i]._height = rockets[i - 1]._height + 50 + rand() % 300;
+}
 
 void print_rect(sf::RenderWindow& window, Rectangle* ptr, int size) {
 	for (int i = 0; i < size;i++)
