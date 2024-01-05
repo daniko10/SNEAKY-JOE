@@ -80,9 +80,12 @@ int main()
 	//////////////////////////// MAIN LOOP
 
 	while (window.isOpen()) {
-		if (life_left == 0)
-			boolean = 3;
-
+		if (life_left == 0 || boolean == 3) {
+			std::cout << "Output: Game ended!";
+			window.close();
+			break;
+		}
+			
 		sf::Event event;
 		while (window.pollEvent(event)) {
 			switch (event.type) {
@@ -117,13 +120,15 @@ int main()
 				player->setSize(50, 100);
 			}
 		}
-
+		
 		controlling(window, player, 1, floor, 1, levels, 7, &boolean,tab_menu, background_p, life, &life_left, rockets, 4);
 
 	}
 
 	clear_memory_single_obj(player);
 	clear_memory_single_obj(floor);
+	clear_memory_single_obj(background_p);
 	clear_memory_nonsingle_obj(levels);
-
+	clear_memory_nonsingle_obj(rockets);
+	return 0;
 }

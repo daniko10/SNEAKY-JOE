@@ -38,5 +38,7 @@ void menu(sf::RenderWindow& window, int* boolean, Menu* tab_menu) {
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && index == 0)
 		*boolean = 1;
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && index == 2)
+		*boolean = 3;
 	
 }

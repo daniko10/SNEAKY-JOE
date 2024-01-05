@@ -10,7 +10,7 @@ public:
 	Rectangle(sf::Vector2f, sf::Vector2f, sf::Color, sf::Texture*);
 	Rectangle(sf::Vector2f, sf::Vector2f, sf::Color, sf::Texture*, bool);
 	void draw(sf::RenderWindow&);
-	void move_rocket(Rectangle*, int);
+	void move_rocket(Rectangle*, int, int*, Rectangle*);
 	void moveA();
 	void moveD();
 	void jump();
@@ -18,10 +18,10 @@ public:
 	void check_collision(Rectangle*, int);
 	void setSize(int, int);
 	void setTexture(sf::Texture*);
+	void control_rocket(Rectangle*, int, int*);
 
 	bool jumped = false;
 	friend void print_rect(sf::RenderWindow&, Rectangle*, int);
-	friend void control_rocket(Rectangle*, int);
 	friend void controlling(sf::RenderWindow&, Rectangle*, int, Rectangle*, int, Rectangle*, int, int*, Menu*, Rectangle*, Rectangle*, int*, Rectangle*, int);
 	friend void clear_memory_single_obj(Rectangle*);
 	friend void clear_memory_nonsingle_obj(Rectangle*);

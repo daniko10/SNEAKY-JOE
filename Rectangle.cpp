@@ -6,6 +6,7 @@ float gravity_down_jump = 0.0;
 float gravity_down = 0.0;
 bool level_above = false;
 bool first_touch = false;
+bool invisible = true;
 
 ///////////////////////////////////////////// METHODS
 
@@ -40,18 +41,52 @@ void Rectangle::draw(sf::RenderWindow& window) {
 	window.draw(_rect);
 }
 
-void Rectangle::move_rocket(Rectangle* rockets, int size) {
-	if (rocket_to_right && _width >= 1280) {
-		_width = -100;
-		control_rocket(rockets, size);
-	}
-	else if(rocket_to_right && _width < 1280)
-		_width += 8;
+void Rectangle::move_rocket(Rectangle* rockets, int size, int *heart, Rectangle* player) {
+	bool hitted = false;
+	player->control_rocket(rockets, size, heart);
+	
+	if(invisible)
+		for (int i = 0; i < size;i++) {
+			if (rockets[i]._width > player->_width) {
+				if (rockets[i]._height < player->_height) {
+					if (rockets[i]._width <= player->_width + player->_size_x && player->_height - rockets[i]._height < rockets[i]._size_y) {
+						hitted = true;
+						break;
+					}
+				}
+				else {
+					if (rockets[i]._width <= player->_width + player->_size_x && rockets[i]._height - player->_height < player->_size_y) {
+						hitted = true;
+						break;
+					}
+				}
+			}
+			else {
+				if (rockets[i]._height < player->_height) {
+					if (rockets[i]._width + rockets[i]._size_x >= player->_width && player->_height - rockets[i]._height < rockets[i]._size_y) {
+						hitted = true;
+						break;
+					}
+				}
+				else {
+					if (rockets[i]._width + rockets[i]._size_x >= player->_width && rockets[i]._height - player->_height < player->_size_y) {
+						hitted = true;
+						break;
+					}
+				}
+			}
+		}
 
-	if (!rocket_to_right && _width <= -100) {
-		_width = 1280;
-		control_rocket(rockets, size);
+	if (hitted) {
+		(*heart) -= 1;
+		std::cout << "Output: Player is hitted by the rocket! Life remained: " << *heart << std::endl;
+		invisible = false;
+		player->_height = -100;
+		player->_width = 625;
 	}
+
+	if(rocket_to_right && _width < 1280)
+		_width += 8;
 	else if(!rocket_to_right && _width > -100)
 		_width -= 8;
 
@@ -103,13 +138,12 @@ void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, R
 	print_rect(window, background, 1);
 
 	if (*size_heart == 0) {
-		*boolean = 2;
+		*boolean = 3;
 		return;
 	}
 
 	if (*boolean == 0) {
 		menu(window, boolean, tab_menu);
-		
 	}
 	else {
 		for (int i = 0; i < size_levels; i++) {
@@ -135,7 +169,7 @@ void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, R
 	if (*boolean != 0) {
 		print_rect(window, rockets, size_rockets);
 		for (int i = 0; i < size_rockets; i++)
-			rockets[i].move_rocket(rockets, size_rockets);
+			rockets[i].move_rocket(rockets, size_rockets, size_heart, player);
 	}
 
 	window.display();
@@ -200,6 +234,7 @@ void Rectangle::gravity(Rectangle* levels, int size, int boolean) {
 	for (int i = 0; i < size;i++) {
 		if ((_height <= levels[i]._height && _height >= levels[i]._height - _size_y) && ((_width - levels[i]._width > -50 && _width < levels[i]._width + 200) || (_width - levels[i]._width < 0 && _width > levels[i]._width - 50)))
 		{
+			invisible = true;
 			_height = levels[i]._height - _size_y;
 			_rect.setPosition(_width, _height);
 			_position_jump = levels[i]._height - _size_y;
@@ -252,18 +287,34 @@ void Rectangle::setTexture(sf::Texture* texture) {
 	_rect.setTexture(texture);
 }
 
-///////////////////////////////////////////// METHODS
+void Rectangle::control_rocket(Rectangle* rockets, int size, int* nmbr_heart) {
+	bool create_new = false;
 
-void control_rocket(Rectangle* rockets, int size) {
-	int first = rand() % 360;
-	rockets[0]._height = first;
-	first = rand() % 360;
-	rockets[size / 2]._height = first;
-	for (int i = 1; i < size / 2; i++)
-		rockets[i]._height = rockets[i - 1]._height + 50 + rand() % 300;
-	for (int i = size / 2 + 1; i < size;i++)
-		rockets[i]._height = rockets[i - 1]._height + 50 + rand() % 300;
+	for (int i = 0; i < size; i++) {
+		if (rockets[i].rocket_to_right && rockets[i]._width >= 1280) {
+			create_new = true;
+			rockets[i]._width = -100;
+		}
+		else if (!(rockets[i].rocket_to_right) && rockets[i]._width <= -100) {
+			create_new = true;
+			rockets[i]._width = 1280;
+		}
+	}
+
+	if (create_new) {
+		int first = rand() % 360;
+		rockets[0]._height = first;
+		first = rand() % 360;
+		rockets[size / 2]._height = first;
+		for (int i = 1; i < size / 2; i++)
+			rockets[i]._height = rockets[i - 1]._height + 50 + rand() % 300;
+		for (int i = size / 2 + 1; i < size;i++)
+			rockets[i]._height = rockets[i - 1]._height + 50 + rand() % 300;
+	}
+
 }
+
+///////////////////////////////////////////// METHODS
 
 void print_rect(sf::RenderWindow& window, Rectangle* ptr, int size) {
 	for (int i = 0; i < size;i++)
