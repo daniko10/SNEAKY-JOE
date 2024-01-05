@@ -83,6 +83,11 @@ void Rectangle::move_rocket(Rectangle* rockets, int size, int *heart, Rectangle*
 		invisible = false;
 		player->_height = -100;
 		player->_width = 625;
+		if (*heart == 0) {
+			player->_height = 300;
+			player->_width = 625;
+			exit(0);
+		}
 	}
 
 	if(rocket_to_right && _width < 1280)
@@ -289,6 +294,9 @@ void Rectangle::setTexture(sf::Texture* texture) {
 
 void Rectangle::control_rocket(Rectangle* rockets, int size, int* nmbr_heart) {
 	bool create_new = false;
+
+	if (*nmbr_heart == 0)
+		return;
 
 	for (int i = 0; i < size; i++) {
 		if (rockets[i].rocket_to_right && rockets[i]._width >= 1280) {

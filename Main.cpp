@@ -39,6 +39,7 @@ int main()
 
 	int life_left = 4;
 	int boolean = 0;
+	bool closed = false;
 
 	Rectangle* player = new Rectangle({ 50, 100 }, { 625, -100 }, sf::Color::Blue, &player_stand);
 
@@ -80,10 +81,10 @@ int main()
 	//////////////////////////// MAIN LOOP
 
 	while (window.isOpen()) {
+		
 		if (life_left == 0 || boolean == 3) {
 			std::cout << "Output: Game ended!";
-			window.close();
-			break;
+			exit(0);
 		}
 			
 		sf::Event event;
@@ -93,7 +94,7 @@ int main()
 				window.close();
 			} break;
 			}
-			if(boolean == 1){
+			if(boolean == 1 && life_left != 0){
 				while (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
 					if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 						player->moveD();
