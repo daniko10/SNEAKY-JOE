@@ -15,10 +15,11 @@ public:
 	void gravity(Rectangle*, int, int);
 	void check_collision(Rectangle*, int);
 	void setSize(int, int);
+	void setTexture(sf::Texture*);
 
 	bool jumped = false;
 	friend void print_rect(sf::RenderWindow&, Rectangle*, int);
-	friend void controlling(sf::RenderWindow&, Rectangle*, int, Rectangle*, int, Rectangle*, int, int*, Menu*);
+	friend void controlling(sf::RenderWindow&, Rectangle*, int, Rectangle*, int, Rectangle*, int, int*, Menu*, Rectangle*);
 	friend void clear_memory_single_obj(Rectangle*);
 	friend void clear_memory_nonsingle_obj(Rectangle*);
 private:

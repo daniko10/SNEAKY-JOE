@@ -16,25 +16,27 @@ void Menu::draw(sf::RenderWindow& window) {
 }
 
 void menu(sf::RenderWindow& window, int* boolean, Menu* tab_menu) {
-	int temp = index;
+	
+	tab_menu[0].draw(window);
+	tab_menu[1].draw(window);
+	tab_menu[2].draw(window);
 
-	for (int i = 0; i < 3; i+=2) {
+	for (int i = 0; i < 3; i++) {
 		if (i == index)
 			tab_menu[i]._text.setFillColor(sf::Color::Magenta);
 		else
 			tab_menu[i]._text.setFillColor(sf::Color::White);
 	}
-	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && index > 0) {
 		index--;
+		sf::sleep(sf::milliseconds(150));
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && index < 2) {
 		index++;
+		sf::sleep(sf::milliseconds(150));
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && index == 0)
 		*boolean = 1;
-
-	tab_menu[0].draw(window);
-	tab_menu[2].draw(window);
+	
 }

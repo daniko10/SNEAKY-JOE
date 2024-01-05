@@ -11,7 +11,8 @@ bool first_touch = false;
 Rectangle::Rectangle(sf::Vector2f size, sf::Vector2f position, sf::Color color) {
 	_rect.setPosition(position);
 	_rect.setSize(size);
-	_rect.setFillColor(color);
+	if(color != sf::Color::Blue)
+		_rect.setFillColor(color);
 
 	_width = position.x;
 	_height = position.y;
@@ -61,8 +62,9 @@ void Rectangle::jump() {
 
 }
 
-void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, Rectangle* floor, int size_floor, Rectangle* levels, int size_levels, int* boolean, Menu* tab_menu) {
+void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, Rectangle* floor, int size_floor, Rectangle* levels, int size_levels, int* boolean, Menu* tab_menu, Rectangle* background) {
 	window.clear();
+	print_rect(window, background, 1);
 
 	if (*boolean == 0) {
 		menu(window, boolean, tab_menu);
@@ -82,6 +84,7 @@ void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, R
 		else
 			player->jump();
 	}
+	
 	print_rect(window, floor, size_floor);
 	print_rect(window, levels, size_levels);
 	print_rect(window, player, size_player);
@@ -193,6 +196,10 @@ void Rectangle::setSize(int x, int y) {
 		_rect.setPosition(_width, _height);
 		hide = false;
 	}
+}
+
+void Rectangle::setTexture(sf::Texture* texture) {
+	_rect.setTexture(texture);
 }
 
 ///////////////////////////////////////////// METHODS
