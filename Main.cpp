@@ -78,6 +78,8 @@ int main()
 		Rectangle({100, 50}, {1280, 400}, sf::Color::Blue,&rocket_left, false)
 	};
 
+	Rectangle* bonus_heart = new Rectangle({ 50,50 }, { 825, 290 }, sf::Color::Blue, &heart_image);
+
 	//////////////////////////// MAIN LOOP
 
 	while (window.isOpen()) {
@@ -115,14 +117,14 @@ int main()
 					}
 					if(!sf::Keyboard::isKeyPressed(sf::Keyboard::D) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 						player->setTexture(&player_stand);
-					controlling(window, player, 1, floor, 1, levels, 7, &boolean, tab_menu, background_p, life, &life_left, rockets, 4);
+					controlling(window, player, 1, floor, 1, levels, 7, &boolean, tab_menu, background_p, life, &life_left, rockets, 4, bonus_heart);
 				}
 				player->setTexture(&player_stand);
 				player->setSize(50, 100);
 			}
 		}
 		
-		controlling(window, player, 1, floor, 1, levels, 7, &boolean,tab_menu, background_p, life, &life_left, rockets, 4);
+		controlling(window, player, 1, floor, 1, levels, 7, &boolean,tab_menu, background_p, life, &life_left, rockets, 4, bonus_heart);
 
 	}
 

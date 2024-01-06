@@ -22,7 +22,8 @@ public:
 
 	bool jumped = false;
 	friend void print_rect(sf::RenderWindow&, Rectangle*, int);
-	friend void controlling(sf::RenderWindow&, Rectangle*, int, Rectangle*, int, Rectangle*, int, int*, Menu*, Rectangle*, Rectangle*, int*, Rectangle*, int);
+	friend void controlling(sf::RenderWindow&, Rectangle*, int, Rectangle*, int, Rectangle*, int, int*, Menu*, Rectangle*, Rectangle*, int*, Rectangle*, int, Rectangle*);
+	friend int check_bonus(Rectangle*, Rectangle*);
 	friend void clear_memory_single_obj(Rectangle*);
 	friend void clear_memory_nonsingle_obj(Rectangle*);
 private:

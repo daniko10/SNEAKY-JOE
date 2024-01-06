@@ -84,8 +84,6 @@ void Rectangle::move_rocket(Rectangle* rockets, int size, int *heart, Rectangle*
 		player->_height = -100;
 		player->_width = 625;
 		if (*heart == 0) {
-			player->_height = 300;
-			player->_width = 625;
 			exit(0);
 		}
 	}
@@ -138,7 +136,7 @@ void Rectangle::jump() {
 
 }
 
-void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, Rectangle* floor, int size_floor, Rectangle* levels, int size_levels, int* boolean, Menu* tab_menu, Rectangle* background, Rectangle* hearts, int* size_heart, Rectangle* rockets, int size_rockets) {
+void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, Rectangle* floor, int size_floor, Rectangle* levels, int size_levels, int* boolean, Menu* tab_menu, Rectangle* background, Rectangle* hearts, int* size_heart, Rectangle* rockets, int size_rockets, Rectangle* bonus_heart) {
 	window.clear();
 	print_rect(window, background, 1);
 
@@ -166,6 +164,7 @@ void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, R
 		}
 	}
 
+	print_rect(window, bonus_heart, 1);
 	print_rect(window, hearts, *size_heart);
 	print_rect(window, floor, size_floor);
 	print_rect(window, levels, size_levels);
@@ -177,9 +176,85 @@ void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, R
 			rockets[i].move_rocket(rockets, size_rockets, size_heart, player);
 	}
 
+	if (check_bonus(bonus_heart, player))
+		if (*size_heart < 4)
+			(*size_heart)++;
+
 	window.display();
 
 	level_above = false;
+}
+
+int check_bonus(Rectangle* bonus_heart, Rectangle* player) {
+	bool hitted = false;
+	if (bonus_heart->_width > player->_width) {
+		if (bonus_heart->_height < player->_height) {
+			if (bonus_heart->_width <= player->_width + player->_size_x && player->_height - bonus_heart->_height < bonus_heart->_size_y) {
+				hitted = true;
+				
+			}
+		}
+		else {
+			if (bonus_heart->_width <= player->_width + player->_size_x && bonus_heart->_height - player->_height < player->_size_y) {
+				hitted = true;
+				
+			}
+		}
+	}
+	else {
+		if (bonus_heart->_height < player->_height) {
+			if (bonus_heart->_width + bonus_heart->_size_x >= player->_width && player->_height - bonus_heart->_height < bonus_heart->_size_y) {
+				hitted = true;
+				
+			}
+		}
+		else {
+			if (bonus_heart->_width + bonus_heart->_size_x >= player->_width && bonus_heart->_height - player->_height < player->_size_y) {
+				hitted = true;
+			
+			}
+		}
+	}
+
+	if (hitted) {
+		int choice = rand() % 7;
+		int width = 0, height = 0;
+
+		if (choice == 0) {
+			width = 425;
+			height = 300;
+		}
+		else if (choice == 1) {
+			width = 175;
+			height = 460;
+		}
+		else if (choice == 2) {
+			width = 175;
+			height = 140;
+		}
+		else if (choice == 3) {
+			width = 625;
+			height = 460;
+		}
+		else if (choice == 4) {
+			width = 825;
+			height = 300;
+		}
+		else if (choice == 5) {
+			width = 1075;
+			height = 460;
+		}
+		else if (choice == 6) {
+			width = 1075;
+			height = 140;
+		}
+		bonus_heart->_width = width;
+		bonus_heart->_height = height;
+		bonus_heart->_rect.setPosition(width, height);
+		return 1;
+	}
+	else
+		return 0;
 }
 
 void Rectangle::check_collision(Rectangle* levels, int size) {
@@ -293,6 +368,8 @@ void Rectangle::setTexture(sf::Texture* texture) {
 }
 
 void Rectangle::control_rocket(Rectangle* rockets, int size, int* nmbr_heart) {
+	srand(time(nullptr));
+	
 	bool create_new = false;
 
 	if (*nmbr_heart == 0)
