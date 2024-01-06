@@ -24,6 +24,7 @@ Rectangle::Rectangle(sf::Vector2f size, sf::Vector2f position, sf::Color color, 
 }
 
 Rectangle::Rectangle(sf::Vector2f size, sf::Vector2f position, sf::Color color, sf::Texture* texture, bool s) {
+	std::cout << "Output: New Rectangle object created!\n";
 	_rect.setPosition(position);
 	_rect.setSize(size);
 	if (color != sf::Color::Blue)
@@ -136,8 +137,80 @@ void Rectangle::jump() {
 
 }
 
-void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, Rectangle* floor, int size_floor, Rectangle* levels, int size_levels, int* boolean, Menu* tab_menu, Rectangle* background, Rectangle* hearts, int* size_heart, Rectangle* rockets, int size_rockets, Rectangle* bonus_heart) {
-	window.clear();
+int check_vodka(Rectangle* bonus_vodka, Rectangle* player) {
+	bool hitted = false;
+
+	if (bonus_vodka->_width > player->_width) {
+		if (bonus_vodka->_height < player->_height) {
+			if (bonus_vodka->_width <= player->_width + player->_size_x && player->_height - bonus_vodka->_height < bonus_vodka->_size_y) {
+				hitted = true;
+			}
+		}
+		else {
+			if (bonus_vodka->_width <= player->_width + player->_size_x && bonus_vodka->_height - player->_height < player->_size_y) {
+				hitted = true;
+			}
+		}
+	}
+	else {
+		if (bonus_vodka->_height < player->_height) {
+			if (bonus_vodka->_width + bonus_vodka->_size_x >= player->_width && player->_height - bonus_vodka->_height < bonus_vodka->_size_y) {
+				hitted = true;
+			}
+		}
+		else {
+			if (bonus_vodka->_width + bonus_vodka->_size_x >= player->_width && bonus_vodka->_height - player->_height < player->_size_y) {
+				hitted = true;
+			}
+		}
+	}
+
+	if (hitted) {
+		std::cout << "Output: Bonus taken\n";
+		int choice = rand() % 7;
+		int width = 0, height = 0;
+
+		do {
+			if (choice == 0) {
+				width = 425;
+				height = 300;
+			}
+			else if (choice == 1) {
+				width = 175;
+				height = 460;
+			}
+			else if (choice == 2) {
+				width = 175;
+				height = 140;
+			}
+			else if (choice == 3) {
+				width = 625;
+				height = 460;
+			}
+			else if (choice == 4) {
+				width = 825;
+				height = 300;
+			}
+			else if (choice == 5) {
+				width = 1075;
+				height = 460;
+			}
+			else if (choice == 6) {
+				width = 1075;
+				height = 140;
+			}
+		} while (bonus_vodka->_width == width && bonus_vodka->_height == height);
+		bonus_vodka->_width = width;
+		bonus_vodka->_height = height;
+		bonus_vodka->_rect.setPosition(width, height);
+		return 1;
+	}
+	else
+		return 0;
+}
+
+void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, Rectangle* floor, int size_floor, Rectangle* levels, int size_levels, int* boolean, Menu* tab_menu, Rectangle* background, Rectangle* hearts, int* size_heart, Rectangle* rockets, int size_rockets, Rectangle* bonus_heart, Rectangle* bonus_vodka, int* vodka_count, Rectangle* i_vodka, sf::Text t) {
+
 	print_rect(window, background, 1);
 
 	if (*size_heart == 0) {
@@ -163,7 +236,11 @@ void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, R
 			player->jump();
 		}
 	}
+	t.setString(": " + std::to_string(*vodka_count));
 
+	window.draw(t);
+	print_rect(window, i_vodka, 1);
+	print_rect(window, bonus_vodka, 1);
 	print_rect(window, bonus_heart, 1);
 	print_rect(window, hearts, *size_heart);
 	print_rect(window, floor, size_floor);
@@ -176,9 +253,15 @@ void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, R
 			rockets[i].move_rocket(rockets, size_rockets, size_heart, player);
 	}
 
-	if (check_bonus(bonus_heart, player))
+	if (check_bonus(bonus_heart, player)) {
+		std::cout << "Output: Player collected additional health!\n";
 		if (*size_heart < 4)
 			(*size_heart)++;
+	}
+
+	if (check_vodka(bonus_vodka, player)) {
+		(*vodka_count)++;
+	}
 
 	window.display();
 
@@ -368,7 +451,6 @@ void Rectangle::setTexture(sf::Texture* texture) {
 }
 
 void Rectangle::control_rocket(Rectangle* rockets, int size, int* nmbr_heart) {
-	srand(time(nullptr));
 	
 	bool create_new = false;
 
