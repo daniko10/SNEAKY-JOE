@@ -89,9 +89,9 @@ void Rectangle::move_rocket(Rectangle* rockets, int size, int *heart, Rectangle*
 		}
 	}
 
-	if(rocket_to_right && _width < 1280)
+	if (rocket_to_right && _width < 1280)
 		_width += 8;
-	else if(!rocket_to_right && _width > -100)
+	else if (!rocket_to_right && _width > -100)
 		_width -= 8;
 
 	_rect.setPosition(_width, _height);
@@ -300,37 +300,40 @@ int check_bonus(Rectangle* bonus_heart, Rectangle* player) {
 	}
 
 	if (hitted) {
-		int choice = rand() % 7;
+		int choice;
 		int width = 0, height = 0;
 
-		if (choice == 0) {
-			width = 425;
-			height = 300;
-		}
-		else if (choice == 1) {
-			width = 175;
-			height = 460;
-		}
-		else if (choice == 2) {
-			width = 175;
-			height = 140;
-		}
-		else if (choice == 3) {
-			width = 625;
-			height = 460;
-		}
-		else if (choice == 4) {
-			width = 825;
-			height = 300;
-		}
-		else if (choice == 5) {
-			width = 1075;
-			height = 460;
-		}
-		else if (choice == 6) {
-			width = 1075;
-			height = 140;
-		}
+		do {
+			choice = rand() % 7;
+			if (choice == 0) {
+				width = 425;
+				height = 300;
+			}
+			else if (choice == 1) {
+				width = 175;
+				height = 460;
+			}
+			else if (choice == 2) {
+				width = 175;
+				height = 140;
+			}
+			else if (choice == 3) {
+				width = 625;
+				height = 460;
+			}
+			else if (choice == 4) {
+				width = 825;
+				height = 300;
+			}
+			else if (choice == 5) {
+				width = 1075;
+				height = 460;
+			}
+			else if (choice == 6) {
+				width = 1075;
+				height = 140;
+			}
+		} while (bonus_heart->_width == width && bonus_heart->_height == height);
 		bonus_heart->_width = width;
 		bonus_heart->_height = height;
 		bonus_heart->_rect.setPosition(width, height);
@@ -451,32 +454,35 @@ void Rectangle::setTexture(sf::Texture* texture) {
 }
 
 void Rectangle::control_rocket(Rectangle* rockets, int size, int* nmbr_heart) {
-	
-	bool create_new = false;
 
 	if (*nmbr_heart == 0)
 		return;
 
+	int rand_nmbr = rand() % 671;
+
 	for (int i = 0; i < size; i++) {
 		if (rockets[i].rocket_to_right && rockets[i]._width >= 1280) {
-			create_new = true;
-			rockets[i]._width = -100;
+			rockets[i]._width = -100 - rand() % 100;
+			for (int j = 0; j < size;j++) {
+				if (rockets[j]._height > rand_nmbr + 50 || rockets[j]._height < rand_nmbr - 50);
+				else {
+					j = 0;
+					rand_nmbr = rand() % 671;
+				}
+			}
+			rockets[i]._height = rand_nmbr;
 		}
 		else if (!(rockets[i].rocket_to_right) && rockets[i]._width <= -100) {
-			create_new = true;
-			rockets[i]._width = 1280;
+			rockets[i]._width = 1280 + rand() % 100;
+			for (int j = 0; j < size;j++) {
+				if (rockets[j]._height > rand_nmbr + 50 || rockets[j]._height < rand_nmbr - 50);
+				else {
+					j = 0;
+					rand_nmbr = rand() % 671;
+				}
+			}
+			rockets[i]._height = rand_nmbr;
 		}
-	}
-
-	if (create_new) {
-		int first = rand() % 360;
-		rockets[0]._height = first;
-		first = rand() % 360;
-		rockets[size / 2]._height = first;
-		for (int i = 1; i < size / 2; i++)
-			rockets[i]._height = rockets[i - 1]._height + 50 + rand() % 300;
-		for (int i = size / 2 + 1; i < size;i++)
-			rockets[i]._height = rockets[i - 1]._height + 50 + rand() % 300;
 	}
 
 }
