@@ -116,7 +116,9 @@ int main()
 
 			exit(0);
 		}
-
+		else if (boolean == 2) {
+			tutorial(window, &player_stand, &player_left, &player_right, &level, &background, &boolean, font);
+		}
 		sf::Event event;
 		while (window.pollEvent(event)) {
 			switch (event.type) {
