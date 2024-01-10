@@ -13,6 +13,8 @@ public:
 	void move_rocket(Rectangle*, int, int*, Rectangle*);
 	void moveA();
 	void moveD();
+	void moveA(int, int);
+	void moveD(int, int);
 	void jump();
 	void gravity(Rectangle*, int, int);
 	void check_collision(Rectangle*, int);
@@ -23,6 +25,7 @@ public:
 	bool jumped = false;
 	friend void print_rect(sf::RenderWindow&, Rectangle*, int);
 	friend void controlling(sf::RenderWindow&, Rectangle*, int, Rectangle*, int, Rectangle*, int, int*, Menu*, Rectangle*, Rectangle*, int*, Rectangle*, int, Rectangle*, Rectangle*, int*, Rectangle*, sf::Text);
+	friend void tutorial(sf::RenderWindow&,sf::Texture*, sf::Texture*, sf::Texture*, sf::Texture*, sf::Texture*, int*, sf::Font);
 	friend int check_bonus(Rectangle*, Rectangle*);
 	friend int check_vodka(Rectangle*, Rectangle*);
 	friend void clear_memory_single_obj(Rectangle*);
@@ -41,5 +44,7 @@ private:
 	int _size_y;
 	int _size_x;
 };
+
+void tutorial(sf::RenderWindow&, sf::Texture*, sf::Texture*, sf::Texture*, sf::Texture*, sf::Texture*, int*, sf::Font);
 
 #endif
