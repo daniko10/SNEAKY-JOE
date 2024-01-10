@@ -85,7 +85,9 @@ void Rectangle::move_rocket(Rectangle* rockets, int size, int *heart, Rectangle*
 		player->_height = -100;
 		player->_width = 625;
 		if (*heart == 0) {
-			exit(0);
+			first_touch = false;
+			player->_rect.setPosition(player->_width,player->_height);
+			return;
 		}
 	}
 
@@ -238,12 +240,13 @@ void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, R
 
 	print_rect(window, background, 1);
 
-	if (*size_heart == 0) {
-		*boolean = 3;
-		return;
+	if (*size_heart <= 0) {
+		*boolean = 0;
 	}
 
 	if (*boolean == 0) {
+		*size_heart = 4;
+		*vodka_count = 0;
 		menu(window, boolean, tab_menu);
 	}
 	else {
@@ -594,6 +597,10 @@ void tutorial(sf::RenderWindow& window,sf::Texture* texture_player_stand, sf::Te
 		window.display();
 		counter++;
 	}
+
+	clear_memory_single_obj(background);
+	clear_memory_nonsingle_obj(tutorial_levels);
+	clear_memory_nonsingle_obj(tutorial_players);
 }
 
 void print_rect(sf::RenderWindow& window, Rectangle* ptr, int size) {

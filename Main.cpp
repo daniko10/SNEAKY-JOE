@@ -99,9 +99,10 @@ int main()
 
 	//////////////////////////// MAIN LOOP
 
-	while (window.isOpen()) {
+	while (true) {
 
-		if (life_left == 0 || boolean == 3) {
+		if (boolean == 3) {
+			window.clear();
 			std::cout << "Output: Game ended! Thanks!";
 
 			clear_memory_single_obj(player);
@@ -153,9 +154,7 @@ int main()
 				player->setSize(50, 100);
 			}
 		}
-		
-		controlling(window, player, 1, floor, 1, levels, 7, &boolean,tab_menu, background_p, life, &life_left, rockets, 4, bonus_heart, bonus_vodka, &vodka_bonus, i_vodka, text);
-
+		controlling(window, player, 1, floor, 1, levels, 7, &boolean, tab_menu, background_p, life, &life_left, rockets, 4, bonus_heart, bonus_vodka, &vodka_bonus, i_vodka, text);
 	}
 
 }
