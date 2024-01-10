@@ -1,6 +1,6 @@
-#include "MyLibrary.h"
-#include "Rectangle.h"
-#include "Menu.h"
+#include ".\\include\\MyLibrary.h"
+#include ".\\include\\Menu.h"
+#include ".\\include\\Rectangle.h"
 
 int main()
 {
@@ -14,32 +14,32 @@ int main()
 	//////////////////////////// FONTS
 
 	sf::Font menu_font;
-	menu_font.loadFromFile("C:\\Users\\dan-c\\Desktop\\C++\\open-sans-font\\OpenSansBoldItalic-YWD4.ttf");
+	menu_font.loadFromFile(".\\assets\\open-sans-font\\OpenSansBoldItalic-YWD4.ttf");
 
 	//////////////////////////// TEXTURES
 	
 	sf::Texture player_stand;
-	if (player_stand.loadFromFile(".\\character.png")) std::cout << "Pregame: Texture loaded!\n";
+	if (player_stand.loadFromFile(".\\assets\\images\\character.png")) std::cout << "Pregame: Texture loaded!\n";
 	sf::Texture player_left;
-	if(player_left.loadFromFile(".\\character_left_side.png")) std::cout << "Pregame: Texture loaded!\n";
+	if(player_left.loadFromFile(".\\assets\\images\\character_left_side.png")) std::cout << "Pregame: Texture loaded!\n";
 	sf::Texture player_right;
-	if(player_right.loadFromFile(".\\character_right_side.png")) std::cout << "Pregame: Texture loaded!\n";
+	if(player_right.loadFromFile(".\\assets\\images\\character_right_side.png")) std::cout << "Pregame: Texture loaded!\n";
 	sf::Texture level;
-	if(level.loadFromFile(".\\level.png")) std::cout << "Pregame: Texture loaded!\n";
+	if(level.loadFromFile(".\\assets\\images\\level.png")) std::cout << "Pregame: Texture loaded!\n";
 	sf::Texture floor_level;
-	if(floor_level.loadFromFile(".\\floor.png")) std::cout << "Pregame: Texture loaded!\n";
+	if(floor_level.loadFromFile(".\\assets\\images\\floor.png")) std::cout << "Pregame: Texture loaded!\n";
 	sf::Texture background;
-	if(background.loadFromFile(".\\background.jpg")) std::cout << "Pregame: Texture loaded!\n";
+	if(background.loadFromFile(".\\assets\\images\\background.jpg")) std::cout << "Pregame: Texture loaded!\n";
 	sf::Texture heart_image;
-	if(heart_image.loadFromFile(".\\heart.png")) std::cout << "Pregame: Texture loaded!\n";
+	if(heart_image.loadFromFile(".\\assets\\images\\heart.png")) std::cout << "Pregame: Texture loaded!\n";
 	sf::Texture rocket_right;
-	if(rocket_right.loadFromFile(".\\rocket_to_right.png")) std::cout << "Pregame: Texture loaded!\n";
+	if(rocket_right.loadFromFile(".\\assets\\images\\rocket_to_right.png")) std::cout << "Pregame: Texture loaded!\n";
 	sf::Texture rocket_left;
-	if(rocket_left.loadFromFile(".\\rocket_to_left.png")) std::cout << "Pregame: Texture loaded!\n";
+	if(rocket_left.loadFromFile(".\\assets\\images\\rocket_to_left.png")) std::cout << "Pregame: Texture loaded!\n";
 	sf::Texture vodka_image;
-	if(vodka_image.loadFromFile(".\\vodka.png")) std::cout << "Pregame: Texture loaded!\n";
+	if(vodka_image.loadFromFile(".\\assets\\images\\vodka.png")) std::cout << "Pregame: Texture loaded!\n";
 	sf::Font font;
-	if(font.loadFromFile("C:\\Users\\dan-c\\Desktop\\C++\\open-sans-font\\OpenSansItalic-KwXl.ttf")) std::cout << "Pregame: Font loaded!\n";
+	if(font.loadFromFile(".\\assets\\open-sans-font\\OpenSansItalic-KwXl.ttf")) std::cout << "Pregame: Font loaded!\n";
 
 	//////////////////////////// OBJECTS
 
