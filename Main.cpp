@@ -102,7 +102,7 @@ int main()
 	while (window.isOpen()) {
 
 		if (life_left == 0 || boolean == 3) {
-			std::cout << "Output: Game ended!";
+			std::cout << "Output: Game ended! Thanks!";
 
 			clear_memory_single_obj(player);
 			clear_memory_single_obj(floor);
