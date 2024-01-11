@@ -46,37 +46,8 @@ void Rectangle::move_rocket(Rectangle* rockets, int size, int *heart, Rectangle*
 	bool hitted = false;
 	player->control_rocket(rockets, size, heart);
 	
-	if(invisible)
-		for (int i = 0; i < size;i++) {
-			if (rockets[i]._width > player->_width) {
-				if (rockets[i]._height < player->_height) {
-					if (rockets[i]._width <= player->_width + player->_size_x && player->_height - rockets[i]._height < rockets[i]._size_y) {
-						hitted = true;
-						break;
-					}
-				}
-				else {
-					if (rockets[i]._width <= player->_width + player->_size_x && rockets[i]._height - player->_height < player->_size_y) {
-						hitted = true;
-						break;
-					}
-				}
-			}
-			else {
-				if (rockets[i]._height < player->_height) {
-					if (rockets[i]._width + rockets[i]._size_x >= player->_width && player->_height - rockets[i]._height < rockets[i]._size_y) {
-						hitted = true;
-						break;
-					}
-				}
-				else {
-					if (rockets[i]._width + rockets[i]._size_x >= player->_width && rockets[i]._height - player->_height < player->_size_y) {
-						hitted = true;
-						break;
-					}
-				}
-			}
-		}
+	if (invisible) 
+		hitted = check_collision(rockets, size, player, 0);	
 
 	if (hitted) {
 		(*heart) -= 1;
@@ -163,70 +134,52 @@ void Rectangle::jump() {
 
 }
 
+void check_position_clear(int* width, int* height) {
+	int choice = rand() % 7;
+	choice = rand() % 7;
+	if (choice == 0) {
+		*width = 425;
+		*height = 300;
+	}
+	else if (choice == 1) {
+		*width = 175;
+		*height = 460;
+	}
+	else if (choice == 2) {
+		*width = 175;
+		*height = 140;
+	}
+	else if (choice == 3) {
+		*width = 625;
+		*height = 460;
+	}
+	else if (choice == 4) {
+		*width = 825;
+		*height = 300;
+	}
+	else if (choice == 5) {
+		*width = 1075;
+		*height = 460;
+	}
+	else if (choice == 6) {
+		*width = 1075;
+		*height = 140;
+	}
+}
+
 int check_vodka(Rectangle* bonus_vodka, Rectangle* player) {
 	bool hitted = false;
 
-	if (bonus_vodka->_width > player->_width) {
-		if (bonus_vodka->_height < player->_height) {
-			if (bonus_vodka->_width <= player->_width + player->_size_x && player->_height - bonus_vodka->_height < bonus_vodka->_size_y) {
-				hitted = true;
-			}
-		}
-		else {
-			if (bonus_vodka->_width <= player->_width + player->_size_x && bonus_vodka->_height - player->_height < player->_size_y) {
-				hitted = true;
-			}
-		}
-	}
-	else {
-		if (bonus_vodka->_height < player->_height) {
-			if (bonus_vodka->_width + bonus_vodka->_size_x >= player->_width && player->_height - bonus_vodka->_height < bonus_vodka->_size_y) {
-				hitted = true;
-			}
-		}
-		else {
-			if (bonus_vodka->_width + bonus_vodka->_size_x >= player->_width && bonus_vodka->_height - player->_height < player->_size_y) {
-				hitted = true;
-			}
-		}
-	}
+	hitted = check_collision(bonus_vodka, 1, player, 0);
 
 	if (hitted) {
 		std::cout << "Output: Bonus taken\n";
-		int choice;
 		int width = 0, height = 0;
 
 		do {
-			choice = rand() % 7;
-			if (choice == 0) {
-				width = 425;
-				height = 300;
-			}
-			else if (choice == 1) {
-				width = 175;
-				height = 460;
-			}
-			else if (choice == 2) {
-				width = 175;
-				height = 140;
-			}
-			else if (choice == 3) {
-				width = 625;
-				height = 460;
-			}
-			else if (choice == 4) {
-				width = 825;
-				height = 300;
-			}
-			else if (choice == 5) {
-				width = 1075;
-				height = 460;
-			}
-			else if (choice == 6) {
-				width = 1075;
-				height = 140;
-			}
+			check_position_clear(&width, &height);
 		} while (bonus_vodka->_width == width && bonus_vodka->_height == height);
+
 		bonus_vodka->_width = width;
 		bonus_vodka->_height = height;
 		bonus_vodka->_rect.setPosition(width, height);
@@ -257,7 +210,7 @@ void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, R
 			}
 		}
 
-		player->check_collision(levels, size_levels);
+		check_collision(levels, size_levels, player,1);
 		if (player->jumped == false || player->can_jump == false || level_above)
 			player->gravity(levels, size_levels, *boolean);
 		else {
@@ -298,70 +251,17 @@ void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, R
 
 int check_bonus(Rectangle* bonus_heart, Rectangle* player) {
 	bool hitted = false;
-	if (bonus_heart->_width > player->_width) {
-		if (bonus_heart->_height < player->_height) {
-			if (bonus_heart->_width <= player->_width + player->_size_x && player->_height - bonus_heart->_height < bonus_heart->_size_y) {
-				hitted = true;
-				
-			}
-		}
-		else {
-			if (bonus_heart->_width <= player->_width + player->_size_x && bonus_heart->_height - player->_height < player->_size_y) {
-				hitted = true;
-				
-			}
-		}
-	}
-	else {
-		if (bonus_heart->_height < player->_height) {
-			if (bonus_heart->_width + bonus_heart->_size_x >= player->_width && player->_height - bonus_heart->_height < bonus_heart->_size_y) {
-				hitted = true;
-				
-			}
-		}
-		else {
-			if (bonus_heart->_width + bonus_heart->_size_x >= player->_width && bonus_heart->_height - player->_height < player->_size_y) {
-				hitted = true;
-			
-			}
-		}
-	}
+	
+	hitted = check_collision(bonus_heart, 1, player, 0);
 
 	if (hitted) {
 		int choice;
 		int width = 0, height = 0;
 
 		do {
-			choice = rand() % 7;
-			if (choice == 0) {
-				width = 425;
-				height = 300;
-			}
-			else if (choice == 1) {
-				width = 175;
-				height = 460;
-			}
-			else if (choice == 2) {
-				width = 175;
-				height = 140;
-			}
-			else if (choice == 3) {
-				width = 625;
-				height = 460;
-			}
-			else if (choice == 4) {
-				width = 825;
-				height = 300;
-			}
-			else if (choice == 5) {
-				width = 1075;
-				height = 460;
-			}
-			else if (choice == 6) {
-				width = 1075;
-				height = 140;
-			}
+			check_position_clear(&width, &height);
 		} while (bonus_heart->_width == width && bonus_heart->_height == height);
+
 		bonus_heart->_width = width;
 		bonus_heart->_height = height;
 		bonus_heart->_rect.setPosition(width, height);
@@ -371,53 +271,67 @@ int check_bonus(Rectangle* bonus_heart, Rectangle* player) {
 		return 0;
 }
 
-void Rectangle::check_collision(Rectangle* levels, int size) {
-	for (int i = 0; i < size; i++) {
-		if ((_width > levels[i]._width - _size_x + 3 && _width < levels[i]._width + levels[i]._size_x - 3) && (_height >= levels[i]._height - _size_y && _height <= levels[i]._height + levels[i]._size_y))
-			return;
-		if (levels[i]._width > _width) {
-			if (levels[i]._height < _height) {
-				if ((_height - levels[i]._height < levels[i]._size_y) && (levels[i]._width - _width < _size_x))
-				{
-					max_width_right = true;
-					_width = levels[i]._width - _size_x;
+bool check_collision(Rectangle* obj, int size, Rectangle* player, int var) {
+	bool hitted = false;
+
+	for (int i = 0; i < size;i++) {
+		if ((player->_width > obj[i]._width - player->_size_x + 3 && player->_width < obj[i]._width + obj[i]._size_x - 3) && (player->_height >= obj[i]._height - player->_size_y && player->_height <= obj[i]._height + obj[i]._size_y))
+			return true;
+		if (obj[i]._width > player->_width) {
+			if (obj[i]._height < player->_height) {
+				if (obj[i]._width <= player->_width + player->_size_x && player->_height - obj[i]._height < obj[i]._size_y) {
+					hitted = true;
+					if (var == 1) {
+						player->max_width_right = true;
+						player->_width = obj[i]._width - player->_size_x;
+					}
+					break;
 				}
 				else
-					max_width_right = false;
+					player->max_width_right = false;
 			}
 			else {
-				if ((levels[i]._height - _height < _size_y) && (levels[i]._width - _width < _size_x))
-				{
-					max_width_right = true;
-					_width = levels[i]._width - _size_x;
+				if (obj[i]._width <= player->_width + player->_size_x && obj[i]._height - player->_height < player->_size_y) {
+					hitted = true;
+					if (var == 1) {
+						player->max_width_right = true;
+						player->_width = obj[i]._width - player->_size_x;
+					}
+					break;
 				}
 				else
-					max_width_right = false;
+					player->max_width_right = false;
 			}
 		}
-		else if (levels[i]._width < _width) {
-			if (levels[i]._height < _height) {
-				if ((levels[i]._height - _height > -levels[i]._size_y) && (levels[i]._width - _width > -levels[i]._size_x))
-				{
-					max_width_left = true;
-					_width = levels[i]._width + levels[i]._size_x;
+		else {
+			if (obj[i]._height < player->_height) {
+				if (obj[i]._width + obj[i]._size_x >= player->_width && player->_height - obj[i]._height < obj[i]._size_y) {
+					hitted = true;
+					if (var == 1) {
+						player->max_width_left = true;
+						player->_width = obj[i]._width + obj[i]._size_x;
+					}
+					break;
 				}
 				else
-					max_width_left = false;
+					player->max_width_left = false;
 			}
 			else {
-				if ((levels[i]._height - _height < _size_y) && (levels[i]._width - _width > -levels[i]._size_x))
-				{
-					max_width_left = true;
-					_width = levels[i]._width + levels[i]._size_x;
+				if (obj[i]._width + obj[i]._size_x >= player->_width && obj[i]._height - player->_height < player->_size_y) {
+					hitted = true;
+					if (var == 1) {
+						player->max_width_left = true;
+						player->_width = obj[i]._width + obj[i]._size_x;
+					}
+					break;
 				}
 				else
-					max_width_left = false;
+					player->max_width_left = false;
 			}
 		}
 	}
 
-	_rect.setPosition(_width, _height);
+	return hitted;
 }
 
 void Rectangle::gravity(Rectangle* levels, int size, int boolean) {

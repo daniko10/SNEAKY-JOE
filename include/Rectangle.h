@@ -17,7 +17,6 @@ public:
 	void moveD(int, int);
 	void jump();
 	void gravity(Rectangle*, int, int);
-	void check_collision(Rectangle*, int);
 	void setSize(int, int);
 	void setTexture(sf::Texture*);
 	void control_rocket(Rectangle*, int, int*);
@@ -26,8 +25,10 @@ public:
 	friend void print_rect(sf::RenderWindow&, Rectangle*, int);
 	friend void controlling(sf::RenderWindow&, Rectangle*, int, Rectangle*, int, Rectangle*, int, int*, Menu*, Rectangle*, Rectangle*, int*, Rectangle*, int, Rectangle*, Rectangle*, int*, Rectangle*, sf::Text);
 	friend void tutorial(sf::RenderWindow&,sf::Texture*, sf::Texture*, sf::Texture*, sf::Texture*, sf::Texture*, int*, sf::Font);
+	friend void check_position_clear(int*, int*);
 	friend int check_bonus(Rectangle*, Rectangle*);
 	friend int check_vodka(Rectangle*, Rectangle*);
+	friend bool check_collision(Rectangle*, int, Rectangle*, int );
 	friend void clear_memory_single_obj(Rectangle*);
 	friend void clear_memory_nonsingle_obj(Rectangle*);
 private:
