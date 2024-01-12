@@ -217,9 +217,10 @@ void controlling(sf::RenderWindow& window, Rectangle* player, int size_player, R
 			player->jump();
 		}
 	}
-	t.setString(": " + std::to_string(*vodka_count));
 
+	t.setString(": " + std::to_string(*vodka_count));
 	window.draw(t);
+
 	print_rect(window, i_vodka, 1);
 	print_rect(window, bonus_vodka, 1);
 	print_rect(window, bonus_heart, 1);
