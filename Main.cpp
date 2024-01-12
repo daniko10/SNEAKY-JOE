@@ -124,8 +124,9 @@ int main()
 		while (window.pollEvent(event)) {
 			switch (event.type) {
 			case sf::Event::Closed: {
-				window.close();
-			} break;
+				boolean = 3;
+				break;
+			}
 			}
 			if(boolean == 1 && life_left != 0){
 				while (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
